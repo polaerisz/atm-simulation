@@ -16,9 +16,11 @@ background:linear-gradient(180deg,#8b0000,#ff2a2a);
 
 /* INTRO SCREEN */
 
+/* INTRO SCREEN */
+
 #intro{
 
-position:fixed;
+position:absolute;
 top:0;
 left:0;
 
@@ -31,14 +33,15 @@ align-items:center;
 
 background:linear-gradient(180deg,#8b0000,#ff2a2a);
 
-z-index:999;
+z-index:1000;
 
-transition:opacity .8s;
+transition:opacity .8s ease;
 
 }
 
 #intro.fade-out{
 opacity:0;
+pointer-events:none;
 }
 
 .intro-content{
@@ -124,7 +127,8 @@ margin-bottom:20px;
 
 .welcome{
     font-weight:bold;
-    font-size: 35px;
+    font-size: 30px;
+    animation:pop 1s ease;
 }
 
 /* CARD SELECTION */
@@ -175,24 +179,60 @@ margin-bottom:10px;
 /* CARD INSERT */
 
 .slot{
-width:120px;
-height:8px;
-background:black;
-border-radius:5px;
+
+width:140px;
+height:12px;
+
+background:#111;
+
+border-radius:6px;
+
+box-shadow:
+inset 0 3px 6px rgba(0,0,0,.8),
+0 2px 4px rgba(0,0,0,.6);
+
+position:relative;
+
 }
 
 .card{
 
-width:80px;
-height:50px;
+width:90px;
+height:56px;
 
-border-radius:6px;
+border-radius:8px;
 
-background:linear-gradient(#d4a24b,#a67c2f);
+background:linear-gradient(135deg,#d4a24b,#a67c2f);
 
-transform:translateY(-80px);
+position:relative;
 
-transition:1s;
+transform:translateY(-120px) scale(1);
+transition:transform .8s cubic-bezier(.25,.8,.25,1);
+
+box-shadow:0 10px 20px rgba(0,0,0,.4);
+
+}
+
+/* Card sliding in */
+.card.insert{
+transform:translateY(-10px) scale(.98);
+}
+
+/* Card eject animation */
+.card.eject{
+animation:ejectCard 1s forwards;
+}
+
+@keyframes ejectCard{
+0%{
+transform:translateY(-10px) scale(.98);
+}
+40%{
+transform:translateY(-60px) scale(1);
+}
+100%{
+transform:translateY(-140px) scale(1.05);
+}
 }
 
 .card.insert{
@@ -238,15 +278,42 @@ transform:scale(.95);
     font-weight: bold;
     background-color: #d4a24b;
 }
-button{
+.atm .menu-btn,
+.atm .insert-btn,
+.atm .enterB,
+.atm .keypad button,
+.atm .action-buttons-row button,
+.atm .amount-grid button{
+
+padding:7px 15px;
+margin-right:2px;
+
+border:none;
+outline:none;
+
+border-radius:20px;
+background:#e8b062;
+color:white;
+
+font-weight:600;
+font-size:18px;
+
+cursor:pointer;
+
+box-shadow:0 6px 18px rgba(0,0,0,.35);
+transition:.2s;
+
+}
+
+.atm button:hover{
+transform:scale(1.05);
+}.button{
 
 padding:7px 15px;
 margin-right: 2px;
 border:none;
 border-radius:20px;
-
 background:#e8b062;
-
 color:white;
 
 font-weight:600;
@@ -534,4 +601,15 @@ color:white;
 .menu-btn.exit{
 background:#ef4444;
 color:white;
+}
+#pinError{
+
+color:#ff6b6b;
+font-weight:bold;
+font-size:14px;
+
+text-align:center;
+
+min-height:20px;
+
 }
