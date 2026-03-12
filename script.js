@@ -31,17 +31,22 @@ function chooseCard(i) {
 
 // Insert card
 function insertCard() {
-  play("beep");
-  const cardEl = document.getElementById("card");
-  cardEl.classList.add("insert");
 
-  setTimeout(() => {
-    generatePinPad();
-    show("pin");
-  }, 1000);
-}
+play("beep");
 
-// Reset PIN
+const cardEl = document.getElementById("card");
+
+cardEl.classList.remove("eject");
+cardEl.classList.add("insert");
+
+setTimeout(() => {
+
+generatePinPad();
+show("pin");
+
+}, 900);
+
+}// Reset PIN
 function resetPin() {
   pin = "";
   attempts = 0;
@@ -112,20 +117,35 @@ function submitPin() {
     display.classList.add("error");
     setTimeout(() => display.classList.remove("error"), 400);
 
-    attempts++;
-    pin = "";
-    display.innerText = "";
-    generatePinPad();
-    document.getElementById("pinError").innerText = "Incorrect PIN";
+attempts++;
+pin = "";
+display.innerText = "";
+generatePinPad();
+
+let remaining = 3 - attempts;
+
+if (remaining > 0) {
+  document.getElementById("pinError").innerText =
+    "Incorrect PIN. Attempts remaining: " + remaining;
+} else {
+  document.getElementById("pinError").innerText =
+    "Card locked.";
+}
 
     setTimeout(() => {
       document.getElementById("pinError").innerText = "";
     }, 2000);
 
-    if (attempts >= 3) {
-      alert("CARD LOCKED");
-      finishTransaction();
-    }
+if (attempts >= 3) {
+
+  play("error");
+
+  setTimeout(() => {
+    alert("CARD LOCKED. Please contact your bank.");
+    finishTransaction();
+  }, 1000);
+
+}
   }
 }
 
@@ -226,7 +246,7 @@ Thank you!
 
   setTimeout(() => {
     show("another"); // Show Another Transaction screen
-  }, 2500);
+  }, 3500);
 }
 
 // Go back to menu
@@ -266,11 +286,18 @@ function reset() {
 }
 
 // Intro screen fade
-window.onload = () => {
-  setTimeout(() => {
-    document.getElementById("intro").classList.add("fade-out");
-    setTimeout(() => {
-      document.getElementById("intro").style.display = "none";
-    }, 800);
-  }, 2000);
-}
+window.addEventListener("load", () => {
+
+const intro = document.getElementById("intro");
+
+setTimeout(() => {
+
+intro.classList.add("fade-out");
+
+setTimeout(() => {
+intro.remove();
+}, 800);
+
+}, 2000);
+
+});
